@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./public/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <title>Naver TV 영상 재생목록 제작</title>
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center container">
+        <div class="">
+            <h5 class="m-0">NaverTV 재생목록 생성기</h5><br/><span class="mobile-text">NaverTV에서 영상 주소 복사 후 아래 박스에 붙여넣어주세요.</span>
+            <div class="d-flex flex-row mt-5"><input type="text" id="videoURL" class="form-control" autofocus="" placeholder="영상 주소 입력" required />
+            <input type="button" class="btn btn-primary btn-block confirm-button" value="추가!" onclick="addURL();">&nbsp;
+            <br/><input type="button" class="btn btn-primary btn-block confirm-button" value="생성!" onclick="submit();"></div>
+            <div id="item"><br/></div>
+        </div><br/><br/>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        var list = new Array;
+        var count = 0;
+
+        function addURL() {
+            var str = document.getElementById("videoURL").value;
+            
+            var regex = /[^0-9]/g; 
+            var videoID = str.replace(regex, '');
+
+            $("#item").append(`<input type='text' id='video${count}' value='${videoID}' class='form-control' readonly required />`); // 태그 추가
+            count += 1;
+
+            list[list.length] = videoID;
+            console.log(list);
+        }
+
+        function submit() {
+            var link = "";
+            var linkBase = `https://m.tv.naver.com/v/${list[0]}`;
+            list.shift();
+            
+            list.forEach(function(element){
+                link = link + ":" + element;
+            });
+            linkBase = linkBase + `?plClips=true${link}&query=pyt`;
+            $("#item").append(`<br/><br/><strong>Link : ${linkBase}</strong>`); // 태그 추가
+        }
+
+    </script>
+</body>
+</html>
